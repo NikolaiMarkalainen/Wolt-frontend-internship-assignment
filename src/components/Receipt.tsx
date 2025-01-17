@@ -1,8 +1,9 @@
 import "../App.css";
-import { useLocalizedStrings } from "../hooks/hooks";
+import { useCalculatePrice, useLocalizedStrings } from "../hooks/hooks";
 
 export const Receipt = () => {
   const strings = useLocalizedStrings();
+  useCalculatePrice();
   return (
     <div className="receipt-parent">
       <div className="receipt-header">{strings.RECEIPT.TITLE}</div>

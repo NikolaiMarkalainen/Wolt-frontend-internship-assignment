@@ -1,25 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  IDeliveryLocation,
-  IDistanceRanges,
-} from "../../types/DeliveryLocationTypes";
+import { IDeliveryLocation } from "../../types/DeliveryLocationTypes";
 import { RootState } from "../store";
 
-interface deliveryLocationState {
-  coordinates: number[];
-  minCartValue: number;
-  baseFee: number;
-  distanceRanges: IDistanceRanges[];
-}
-
-const initialState: deliveryLocationState = {
+export const initialState: IDeliveryLocation = {
   coordinates: [0.0, 0.0],
   minCartValue: 0,
   baseFee: 0,
   distanceRanges: [{ min: 0, max: 0, a: 0, b: 0 }],
+  userCoordinates: [0.0, 0.0],
+  cartValue: 0,
 };
 
-export const deliveryLocationSlice = createSlice({
+export const deliverySlice = createSlice({
   name: "delivery",
   initialState,
   reducers: {
@@ -28,12 +20,14 @@ export const deliveryLocationSlice = createSlice({
       state.minCartValue = action.payload.minCartValue;
       state.baseFee = action.payload.baseFee;
       state.distanceRanges = action.payload.distanceRanges;
+      state.userCoordinates = action.payload.userCoordinates;
+      state.cartValue = action.payload.cartValue;
     },
   },
 });
 
-export const { setDeliveryLocation } = deliveryLocationSlice.actions;
+export const { setDeliveryLocation } = deliverySlice.actions;
 
 export const selectDelivery = (state: RootState) => state.delivery;
 
-export default deliveryLocationSlice.reducer;
+export default deliverySlice.reducer;

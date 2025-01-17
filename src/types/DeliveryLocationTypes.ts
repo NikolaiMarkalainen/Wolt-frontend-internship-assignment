@@ -11,4 +11,12 @@ export interface IDeliveryLocation {
   minCartValue: number;
   baseFee: number;
   distanceRanges: IDistanceRanges[];
+  userCoordinates: number[];
+  cartValue: number;
+}
+
+export interface IUserOrderData {
+  lat: number;
+  lon: number;
+  cartValue: string;
 }
