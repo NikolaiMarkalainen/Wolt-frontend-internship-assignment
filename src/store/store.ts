@@ -1,8 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import langaugeReducer from "./features/language/languageSlice";
+import langaugeReducer from "./features/languageSlice";
+import deliveryLocationReducer from "./features/deliveryLocationSlice";
+
 export const store = configureStore({
   reducer: {
     language: langaugeReducer,
+    delivery: deliveryLocationReducer,
   },
 });
 

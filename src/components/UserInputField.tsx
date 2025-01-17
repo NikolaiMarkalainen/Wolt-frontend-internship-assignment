@@ -3,6 +3,9 @@ import { validateMonetaryInput } from "../helpers/inputHelpers";
 import { useLocalizedStrings } from "../hooks/hooks";
 import { useState } from "react";
 import { Receipt } from "./Receipt";
+import { useDispatch } from "react-redux";
+import { setDeliveryLocation } from "../store/features/deliveryLocationSlice";
+import { IDeliveryLocation } from "../types/DeliveryLocationTypes";
 
 export const UserInputField = () => {
   const strings = useLocalizedStrings();
@@ -12,6 +15,7 @@ export const UserInputField = () => {
   const [venue, setVenue] = useState<string>("");
   const [cartValue, setCartValue] = useState<string>("");
   const [cartError, setCartError] = useState<string>("");
+  const dispatch = useDispatch();
 
   const getCoordinates = () => {
     setIsLoading(true);
@@ -22,8 +26,32 @@ export const UserInputField = () => {
     });
   };
 
-  const calculateFees = (e: React.FormEvent<HTMLFormElement>) => {
+  const calculateFees = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const staticApiResult = await fetch(
+      "https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/home-assignment-venue-helsinki/static",
+    ).then((response) => response.json());
+    console.log(staticApiResult);
+    const dynamicApiResult = await fetch(
+      "https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/home-assignment-venue-helsinki/dynamic",
+    ).then((response) => response.json());
+
+    const coordinates = staticApiResult.venue_raw.location.coordinates;
+    const minCartValue =
+      dynamicApiResult.venue_raw.delivery_specs.order_minimum_no_surcharge;
+    const baseFee =
+      dynamicApiResult.venue_raw.delivery_specs.delivery_pricing.base_price;
+    const distanceRanges =
+      dynamicApiResult.venue_raw.delivery_specs.delivery_pricing
+        .distance_ranges;
+
+    const deliveryLocation: IDeliveryLocation = {
+      coordinates,
+      minCartValue,
+      baseFee,
+      distanceRanges,
+    };
+    dispatch(setDeliveryLocation(deliveryLocation));
   };
 
   const handleCartInput = (e: React.ChangeEvent<HTMLInputElement>) => {
