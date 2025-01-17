@@ -72,7 +72,6 @@ html {
   background-color: var(--bg-secondary);
   width: 40%;
   display: flex;
-  position: relative;
   flex-direction: column;
   text-align: center;
   border: 1px solid var(--border-color);
@@ -90,35 +89,29 @@ html {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.input-field-header {
-  margin-bottom: 1rem;
-}
 .input-field-content {
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  height: 100%;
   flex-direction: column;
 }
 .input-field-child {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   flex-direction: row;
 }
 
 .input-field-child p {
-  margin-bottom: 1rem;
-  flex: 0 0 auto;
+  min-width: 30%;
   padding-right: 1rem;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: smaller;
-  width: 150px;
 }
 
 .input-field-child input {
   margin: 0;
-  margin-bottom: 1rem;
+  max-width: 50%;
   flex: 1;
   height: 1rem;
   width: 100%;
@@ -127,8 +120,9 @@ html {
 }
 .input-field-buttons {
   display: flex;
+  flex-direction: column;
+  margin-top: 2vh;
   width: 100%;
-  justify-content: center;
 }
 .input-field-buttons button {
   margin: 0.5rem;
@@ -156,7 +150,33 @@ html {
 
 .receipt-parent {
   display: flex;
+  flex-direction: column;
   width: 40%;
   background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  border-radius: 8px;
+}
+
+.receipt-header {
+  display: flex;
+  width: 100%;
   justify-content: center;
+}
+
+.receipt-item {
+  display: flex;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+.receipt-item p {
+  align-self: flex-end;
+}
+
+.receipt-parent:hover {
+  background-color: var(--bg-highlight);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
