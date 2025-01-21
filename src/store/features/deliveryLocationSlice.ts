@@ -3,11 +3,17 @@ import { IDeliveryLocation } from "../../types/DeliveryLocationTypes";
 import { RootState } from "../store";
 
 export const initialState: IDeliveryLocation = {
-  coordinates: [0.0, 0.0],
+  coordinates: {
+    lat: 0,
+    lon: 0,
+  },
   minCartValue: 0,
   baseFee: 0,
   distanceRanges: [{ min: 0, max: 0, a: 0, b: 0 }],
-  userCoordinates: [0.0, 0.0],
+  userCoordinates: {
+    lat: 0,
+    lon: 0,
+  },
   cartValue: 0,
 };
 

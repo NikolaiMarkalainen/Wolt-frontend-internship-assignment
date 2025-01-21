@@ -16,6 +16,6 @@ export const useCalculatePrice = () => {
     locationPrices.coordinates,
     locationPrices.userCoordinates,
   );
-  console.log(locationPrices);
+
   console.log(distance);
 };

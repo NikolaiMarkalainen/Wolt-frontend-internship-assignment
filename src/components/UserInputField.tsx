@@ -4,7 +4,10 @@ import { useLocalizedStrings } from "../hooks/hooks";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setDeliveryLocation } from "../store/features/deliveryLocationSlice";
-import { IDeliveryLocation } from "../types/DeliveryLocationTypes";
+import {
+  ICoordinates,
+  IDeliveryLocation,
+} from "../types/DeliveryLocationTypes";
 
 export const UserInputField = () => {
   const strings = useLocalizedStrings();
@@ -36,7 +39,8 @@ export const UserInputField = () => {
       `https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/${venue}/dynamic`,
     ).then((response) => response.json());
 
-    const coordinates = staticApiResult.venue_raw.location.coordinates;
+    const [lon, lat] = staticApiResult.venue_raw.location.coordinates;
+    const coordinates = { lat, lon };
     const minCartValue =
       dynamicApiResult.venue_raw.delivery_specs.order_minimum_no_surcharge;
     const baseFee =
@@ -44,7 +48,7 @@ export const UserInputField = () => {
     const distanceRanges =
       dynamicApiResult.venue_raw.delivery_specs.delivery_pricing
         .distance_ranges;
-    const userCoordinates: number[] = [longitude, latitude];
+    const userCoordinates: ICoordinates = { lat: latitude, lon: longitude };
     const newCartValue = parseFloat(
       cartValue.replace(".", "").replace(",", "."),
     );

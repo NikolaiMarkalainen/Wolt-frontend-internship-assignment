@@ -7,11 +7,11 @@ export interface IDistanceRanges {
 }
 
 export interface IDeliveryLocation {
-  coordinates: number[];
+  coordinates: ICoordinates;
   minCartValue: number;
   baseFee: number;
   distanceRanges: IDistanceRanges[];
-  userCoordinates: number[];
+  userCoordinates: ICoordinates;
   cartValue: number;
 }
 
@@ -19,4 +19,9 @@ export interface IUserOrderData {
   lat: number;
   lon: number;
   cartValue: string;
+}
+
+export interface ICoordinates {
+  lat: number;
+  lon: number;
 }
