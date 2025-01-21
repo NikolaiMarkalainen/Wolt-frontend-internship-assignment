@@ -1,4 +1,9 @@
-import { ICoordinates } from "../types/DeliveryLocationTypes";
+import {
+  coordinateEnum,
+  ICalculateReceipt,
+  ICoordinates,
+  IReceipt,
+} from "../types/DeliveryTypes";
 
 export const validateMonetaryInput = (input: string): boolean => {
   /* digits + decimal seperator dot or comma and only two digits at the end */
@@ -7,6 +12,23 @@ export const validateMonetaryInput = (input: string): boolean => {
   return regex.test(input);
 };
 
+export const validateCoordinateInput = (
+  input: string,
+  coordinateDirection: coordinateEnum,
+): boolean => {
+  if (coordinateDirection === coordinateEnum.Latitude) {
+    const regex = new RegExp("^([-,+]?)([0-8]?\\d|90)([.]{1}?\\d{1,7})?$");
+    return regex.test(input);
+  }
+  if (coordinateDirection === coordinateEnum.Longitude) {
+    const regex = new RegExp(
+      //optional
+      "^([-,+]?)([0-9]{1,2}|1[1-7][1-9]|180)([.]{1}?\\d{1,7})?$",
+    );
+    return regex.test(input);
+  }
+  return false;
+};
 // Law of Haversines, birds flight
 export const coordinateDistanceCalc = (
   businessCoordinates: ICoordinates,
@@ -25,4 +47,14 @@ export const coordinateDistanceCalc = (
     ) * R;
 
   return distance;
+};
+
+export const calculateFees = (props: ICalculateReceipt): IReceipt => {
+  let deliveryMultiplier;
+  for (const range of props.distanceRanges) {
+    if (range.min >= props.distance && range.max <= props.distance) {
+      deliveryMultiplier = range;
+    }
+  }
+  console.log(deliveryMultiplier);
 };

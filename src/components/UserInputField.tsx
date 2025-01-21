@@ -5,9 +5,10 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setDeliveryLocation } from "../store/features/deliveryLocationSlice";
 import {
+  coordinateEnum,
   ICoordinates,
   IDeliveryLocation,
-} from "../types/DeliveryLocationTypes";
+} from "../types/DeliveryTypes";
 
 export const UserInputField = () => {
   const strings = useLocalizedStrings();
@@ -76,6 +77,14 @@ export const UserInputField = () => {
     }
   };
 
+  const handleCoordinateManualInput = (
+    input: string,
+    setState: React.Dispatch<React.SetStateAction<number>>,
+    coordinateDirection: coordinateEnum,
+  ) => {
+    const validInput = validateCoordinateInput(input, coordinateDirection);
+    setState(input);
+  };
   return (
     <div className="input-field-parent">
       {isLoading && <div className="spinner"></div>}
@@ -99,11 +108,31 @@ export const UserInputField = () => {
           </div>
           <div data-test-id="userLatitude" className="input-field-child">
             <p> {strings.DETAILS.LATITUDE} </p>
-            <input type="text" value={latitude} disabled />
+            <input
+              type="text"
+              value={latitude}
+              onChange={(e) =>
+                handleCoordinateManualInput(
+                  e.target.value,
+                  setLatitude,
+                  coordinateEnum.Latitude,
+                )
+              }
+            />
           </div>
           <div data-test-id="userLongitude" className="input-field-child">
             <p> {strings.DETAILS.LONGITUDE} </p>
-            <input type="text" value={longitude} disabled />
+            <input
+              type="text"
+              value={longitude}
+              onChange={(e) =>
+                handleCoordinateManualInput(
+                  e.target.value,
+                  setLongitude,
+                  coordinateEnum.Longitude,
+                )
+              }
+            />
           </div>
           <div className="input-field-buttons">
             <button onClick={() => getCoordinates()} disabled={isLoading}>

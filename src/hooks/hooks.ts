@@ -1,8 +1,9 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import strings from "../localization";
-import { coordinateDistanceCalc } from "../helpers/helpers";
+import { calculateFees, coordinateDistanceCalc } from "../helpers/helpers";
 import { initialState } from "../store/features/deliveryLocationSlice";
+import { ICalculateReceipt } from "../types/DeliveryTypes";
 
 export const useLocalizedStrings = () => {
   const language = useSelector((s: RootState) => s.language.language);
@@ -16,6 +17,16 @@ export const useCalculatePrice = () => {
     locationPrices.coordinates,
     locationPrices.userCoordinates,
   );
+  // distance calculated now total price for distance and
+  console.log(locationPrices);
+  const feeVariables: ICalculateReceipt = {
+    distance,
+    minCartValue: locationPrices.minCartValue,
+    baseFee: locationPrices.baseFee,
+    distanceRanges: locationPrices.distanceRanges,
+    cartValue: locationPrices.cartValue,
+  };
 
-  console.log(distance);
+  const fees = calculateFees(feeVariables);
+  console.log(fees);
 };

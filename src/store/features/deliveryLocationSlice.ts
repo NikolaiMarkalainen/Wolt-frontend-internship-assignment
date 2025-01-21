@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IDeliveryLocation } from "../../types/DeliveryLocationTypes";
+import { IDeliveryLocation } from "../../types/DeliveryTypes";
 import { RootState } from "../store";
 
 export const initialState: IDeliveryLocation = {
