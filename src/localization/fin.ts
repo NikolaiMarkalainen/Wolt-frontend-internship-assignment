@@ -13,6 +13,10 @@ const fin = {
     ERRORS: {
       INPUT_CART: "Väärä hinta ostoskorille",
       VENUE_SLAG: "Tapahtumapaikkaa ei löydy",
+      COORDINATES: {
+        LATITUDE: "Virheelliset arvot leveysasteelle",
+        LONGITUDE: "Virheelliset arvot pituusasteelle",
+      },
     },
   },
   RECEIPT: {

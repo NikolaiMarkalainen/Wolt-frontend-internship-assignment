@@ -24,7 +24,7 @@ export interface IReceipt {
   cartValue: number;
   deliveryFee: number;
   distance: number;
-  subCharge: number;
+  surCharge: number;
   TotalPrice: number;
 }
 

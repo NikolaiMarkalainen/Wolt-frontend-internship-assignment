@@ -4,6 +4,7 @@ import {
   ICoordinates,
   IReceipt,
 } from "../types/DeliveryTypes";
+import { ErrorCodes } from "../types/ErrorTypes";
 
 export const validateMonetaryInput = (input: string): boolean => {
   /* digits + decimal seperator dot or comma and only two digits at the end */
@@ -21,6 +22,7 @@ export const validateCoordinateInput = (
   }
   // Regex checks allow + - at start with -90 to 90 or -180 to 180 with 7 decimal points and a dot seperator for it depending on param
   if (coordinateDirection === coordinateEnum.Latitude) {
+    console.log("?");
     const regex = new RegExp(
       "^([-,+]?)(([0-8]?\\d|90)([.]{1}?(\\d{1,7})?)?)?$",
     );
@@ -54,12 +56,29 @@ export const coordinateDistanceCalc = (
   return distance;
 };
 
-export const calculateFees = (props: ICalculateReceipt): IReceipt => {
+export const calculateFees = (
+  props: ICalculateReceipt,
+): IReceipt | ErrorCodes => {
   let deliveryMultiplier;
+
   for (const range of props.distanceRanges) {
     if (range.min >= props.distance && range.max <= props.distance) {
       deliveryMultiplier = range;
     }
   }
-  console.log(deliveryMultiplier);
+  if (!deliveryMultiplier) return ErrorCodes.NOT_FOUND;
+  const surCharge = props.cartValue < props.minCartValue ? 200 : 0;
+  const deliveryFee =
+    (deliveryMultiplier.b * props.distance) / 2 + props.baseFee;
+
+  const totalSum = props.cartValue + props.cartValue + deliveryFee + surCharge;
+
+  const totalFee: IReceipt = {
+    cartValue: props.cartValue,
+    distance: props.distance,
+    deliveryFee: deliveryFee,
+    surCharge: surCharge,
+    TotalPrice: totalSum,
+  };
+  return totalFee;
 };

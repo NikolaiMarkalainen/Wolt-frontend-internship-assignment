@@ -13,6 +13,10 @@ const en = {
     ERRORS: {
       INPUT_CART: "Invalid value for Cart",
       VENUE_SLAG: "Venue Slag not found",
+      COORDINATES: {
+        LATITUDE: "Invalid values for Latitude",
+        LONGITUDE: "Invalid values for Longitude",
+      },
     },
   },
   RECEIPT: {

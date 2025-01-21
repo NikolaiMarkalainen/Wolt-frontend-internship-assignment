@@ -28,5 +28,5 @@ export const useCalculatePrice = () => {
   };
 
   const fees = calculateFees(feeVariables);
-  console.log(fees);
+  return fees;
 };

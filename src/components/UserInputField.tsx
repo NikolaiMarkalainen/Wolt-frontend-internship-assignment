@@ -12,6 +12,7 @@ import {
   ICoordinates,
   IDeliveryLocation,
 } from "../types/DeliveryTypes";
+import { ErrorCodes } from "../types/ErrorTypes";
 
 export const UserInputField = () => {
   const strings = useLocalizedStrings();
@@ -21,7 +22,8 @@ export const UserInputField = () => {
   const [venue, setVenue] = useState<string>("");
   const [cartValue, setCartValue] = useState<string>("");
   const [cartError, setCartError] = useState<string>("");
-
+  const [latError, setLatError] = useState<string>("");
+  const [lonError, setLonError] = useState<string>("");
   const dispatch = useDispatch();
 
   const getCoordinates = () => {
@@ -30,6 +32,8 @@ export const UserInputField = () => {
       setLongitude(position.coords.longitude);
       setLatitude(position.coords.latitude);
       setIsLoading(false);
+      clearFieldErrors(ErrorCodes.COORDINATES_LAT);
+      clearFieldErrors(ErrorCodes.COORDINATES_LON);
     });
   };
 
@@ -83,14 +87,53 @@ export const UserInputField = () => {
     }
   };
 
+  const setFieldErrors = (code: ErrorCodes) => {
+    switch (code) {
+      case ErrorCodes.COORDINATES_LAT:
+        setLatError(strings.DETAILS.ERRORS.COORDINATES.LATITUDE);
+        break;
+      case ErrorCodes.COORDINATES_LON:
+        setLonError(strings.DETAILS.ERRORS.COORDINATES.LONGITUDE);
+        break;
+      case ErrorCodes.INPUT_CART:
+        setCartError(strings.DETAILS.ERRORS.INPUT_CART);
+        break;
+    }
+  };
+
+  const clearFieldErrors = (code: ErrorCodes) => {
+    switch (code) {
+      case ErrorCodes.COORDINATES_LAT:
+        setLatError("");
+        break;
+      case ErrorCodes.COORDINATES_LON:
+        setLonError("");
+        break;
+      case ErrorCodes.INPUT_CART:
+        setCartError("");
+        break;
+    }
+  };
+  const directionToErrorCode = (direction: coordinateEnum): ErrorCodes => {
+    if (direction === coordinateEnum.Latitude)
+      return ErrorCodes.COORDINATES_LAT;
+    if (direction === coordinateEnum.Longitude)
+      return ErrorCodes.COORDINATES_LON;
+    else return ErrorCodes.NOT_FOUND;
+  };
+
   const handleCoordinateManualInput = (
     input: string,
     setState: React.Dispatch<React.SetStateAction<number | string | undefined>>,
     coordinateDirection: coordinateEnum,
   ) => {
     const validInput = validateCoordinateInput(input, coordinateDirection);
+    const errorCode = directionToErrorCode(coordinateDirection);
     if (validInput) {
       setState(input);
+      clearFieldErrors(errorCode);
+    } else {
+      setFieldErrors(errorCode);
     }
   };
   return (
@@ -99,7 +142,7 @@ export const UserInputField = () => {
 
       <div className="input-field-header">{strings.DETAILS.TITLE}</div>
       <div className="input-field-content">
-        <form onSubmit={calculateFees}>
+        <form className="input-field-form" onSubmit={calculateFees}>
           <div data-test-id="venueSlug" className="input-field-child">
             <p> {strings.DETAILS.VENUE} </p>
             <input
@@ -112,8 +155,11 @@ export const UserInputField = () => {
           <div data-test-id="cartValue" className="input-field-child">
             <p> {strings.DETAILS.CART} </p>
             <input type="text" value={cartValue} onChange={handleCartInput} />
-            {cartError && <div style={{ color: "red" }}>{cartError}</div>}
           </div>
+          {cartError && (
+            <div className="input-field-child-error">{cartError}</div>
+          )}
+
           <div data-test-id="userLatitude" className="input-field-child">
             <p> {strings.DETAILS.LATITUDE} </p>
             <input
@@ -128,6 +174,9 @@ export const UserInputField = () => {
               }
             />
           </div>
+          {latError && (
+            <div className="input-field-child-error">{latError}</div>
+          )}
           <div data-test-id="userLongitude" className="input-field-child">
             <p> {strings.DETAILS.LONGITUDE} </p>
             <input
@@ -142,6 +191,9 @@ export const UserInputField = () => {
               }
             />
           </div>
+          {lonError && (
+            <div className="input-field-child-error">{lonError}</div>
+          )}
           <div className="input-field-buttons">
             <button onClick={() => getCoordinates()} disabled={isLoading}>
               {isLoading ? "Loading..." : strings.DETAILS.BUTTON.LOCATION}{" "}
