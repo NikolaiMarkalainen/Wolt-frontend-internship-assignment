@@ -1,5 +1,8 @@
 import "../App.css";
-import { validateMonetaryInput } from "../helpers/helpers";
+import {
+  validateCoordinateInput,
+  validateMonetaryInput,
+} from "../helpers/helpers";
 import { useLocalizedStrings } from "../hooks/hooks";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -13,8 +16,8 @@ import {
 export const UserInputField = () => {
   const strings = useLocalizedStrings();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [longitude, setLongitude] = useState<number>(0);
-  const [latitude, setLatitude] = useState<number>(0);
+  const [longitude, setLongitude] = useState<string | number>();
+  const [latitude, setLatitude] = useState<string | number>();
   const [venue, setVenue] = useState<string>("");
   const [cartValue, setCartValue] = useState<string>("");
   const [cartError, setCartError] = useState<string>("");
@@ -49,7 +52,10 @@ export const UserInputField = () => {
     const distanceRanges =
       dynamicApiResult.venue_raw.delivery_specs.delivery_pricing
         .distance_ranges;
-    const userCoordinates: ICoordinates = { lat: latitude, lon: longitude };
+    const userCoordinates: ICoordinates = {
+      lat: Number(latitude),
+      lon: Number(longitude),
+    };
     const newCartValue = parseFloat(
       cartValue.replace(".", "").replace(",", "."),
     );
@@ -79,11 +85,13 @@ export const UserInputField = () => {
 
   const handleCoordinateManualInput = (
     input: string,
-    setState: React.Dispatch<React.SetStateAction<number>>,
+    setState: React.Dispatch<React.SetStateAction<number | string | undefined>>,
     coordinateDirection: coordinateEnum,
   ) => {
     const validInput = validateCoordinateInput(input, coordinateDirection);
-    setState(input);
+    if (validInput) {
+      setState(input);
+    }
   };
   return (
     <div className="input-field-parent">

@@ -7,8 +7,7 @@ import {
 
 export const validateMonetaryInput = (input: string): boolean => {
   /* digits + decimal seperator dot or comma and only two digits at the end */
-  /*     ^\d+[.|,]{1}\d{2}$ */
-  const regex = new RegExp("^\\d+[.|,]{1}\\d{2}$");
+  const regex = new RegExp("^\\d+([.|,]{1}(\\d{1,2})?)?$");
   return regex.test(input);
 };
 
@@ -16,14 +15,20 @@ export const validateCoordinateInput = (
   input: string,
   coordinateDirection: coordinateEnum,
 ): boolean => {
+  console.log(input);
+  if (input === undefined) {
+    return true;
+  }
+  // Regex checks allow + - at start with -90 to 90 or -180 to 180 with 7 decimal points and a dot seperator for it depending on param
   if (coordinateDirection === coordinateEnum.Latitude) {
-    const regex = new RegExp("^([-,+]?)([0-8]?\\d|90)([.]{1}?\\d{1,7})?$");
+    const regex = new RegExp(
+      "^([-,+]?)(([0-8]?\\d|90)([.]{1}?(\\d{1,7})?)?)?$",
+    );
     return regex.test(input);
   }
   if (coordinateDirection === coordinateEnum.Longitude) {
     const regex = new RegExp(
-      //optional
-      "^([-,+]?)([0-9]{1,2}|1[1-7][1-9]|180)([.]{1}?\\d{1,7})?$",
+      "^([-,+]?)(([0-9]{1,2}|1[1-7][1-9]|180)([.]{1}?(\\d{1,7})?)?)?$",
     );
     return regex.test(input);
   }
