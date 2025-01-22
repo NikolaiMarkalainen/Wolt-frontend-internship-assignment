@@ -1,5 +1,6 @@
 import "../App.css";
 import {
+  setErrorMessage,
   validateCoordinateInput,
   validateMonetaryInput,
 } from "../helpers/helpers";
@@ -38,8 +39,8 @@ export const UserInputField = () => {
       setLongitude(position.coords.longitude);
       setLatitude(position.coords.latitude);
       setIsLoading(false);
-      clearFieldErrors(ErrorCodes.COORDINATES_LAT);
-      clearFieldErrors(ErrorCodes.COORDINATES_LON);
+      setLatError("");
+      setLonError("");
     });
   };
 
@@ -85,39 +86,12 @@ export const UserInputField = () => {
     const validInput = validateMonetaryInput(input);
     if (validInput) {
       setCartValue(input);
-      clearFieldErrors(ErrorCodes.INPUT_CART);
+      setCartError("");
     } else {
-      setFieldErrors(ErrorCodes.INPUT_CART);
+      setErrorMessage(ErrorCodes.INPUT_CART, setCartError);
     }
   };
 
-  const setFieldErrors = (code: ErrorCodes) => {
-    switch (code) {
-      case ErrorCodes.COORDINATES_LAT:
-        setLatError(strings.DETAILS.ERRORS.COORDINATES.LATITUDE);
-        break;
-      case ErrorCodes.COORDINATES_LON:
-        setLonError(strings.DETAILS.ERRORS.COORDINATES.LONGITUDE);
-        break;
-      case ErrorCodes.INPUT_CART:
-        setCartError(strings.DETAILS.ERRORS.INPUT_CART);
-        break;
-    }
-  };
-
-  const clearFieldErrors = (code: ErrorCodes) => {
-    switch (code) {
-      case ErrorCodes.COORDINATES_LAT:
-        setLatError("");
-        break;
-      case ErrorCodes.COORDINATES_LON:
-        setLonError("");
-        break;
-      case ErrorCodes.INPUT_CART:
-        setCartError("");
-        break;
-    }
-  };
   const directionToErrorCode = (direction: coordinateEnum): ErrorCodes => {
     if (direction === coordinateEnum.Latitude)
       return ErrorCodes.COORDINATES_LAT;
@@ -133,13 +107,17 @@ export const UserInputField = () => {
   ) => {
     const validInput = validateCoordinateInput(input, coordinateDirection);
     const errorCode = directionToErrorCode(coordinateDirection);
+    const isLat = coordinateDirection === coordinateEnum.Latitude;
+
     if (validInput) {
       setState(input);
-      clearFieldErrors(errorCode);
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      isLat ? setLatError("") : setLonError("");
     } else {
-      setFieldErrors(errorCode);
+      setErrorMessage(errorCode, isLat ? setLatError : setLonError);
     }
   };
+
   return (
     <div className="input-field-parent">
       {isLoading && <div className="spinner"></div>}

@@ -12,9 +12,7 @@ function App() {
       <Header />
       <div className="card-parent">
         <UserInputField />
-        {fees?.error && (
-          
-        )}
+        {fees?.error && <></>}
         <Receipt />
       </div>
     </>

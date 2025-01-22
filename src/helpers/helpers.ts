@@ -6,7 +6,8 @@ import {
   IReceipt,
 } from "../types/DeliveryTypes";
 import { ErrorCodes } from "../types/ErrorTypes";
-
+import strings from "../localization";
+import { store } from "../store/store";
 export const validateMonetaryInput = (input: string): boolean => {
   /* digits + decimal seperator dot or comma and only two digits at the end */
   const regex = new RegExp("^\\d+([.|,]{1}(\\d{1,2})?)?$");
@@ -82,8 +83,31 @@ export const calculateFees = (props: ICalculateReceipt): ICalculateResult => {
   return { result: totalFee };
 };
 
-export const clearStringState = (
-  setState: React.Dispatch<React.SetStateAction<string>>,
+export const setErrorMessage = (
+  code: ErrorCodes,
+  setError: React.Dispatch<React.SetStateAction<string>>,
 ) => {
-  setState("");
+  const state = store.getState();
+  const errorStrings = strings[state.language.language].DETAILS.ERRORS;
+
+  switch (code) {
+    case ErrorCodes.COORDINATES_LAT:
+      setError(errorStrings.COORDINATES.LATITUDE);
+      break;
+    case ErrorCodes.COORDINATES_LON:
+      setError(errorStrings.COORDINATES.LONGITUDE);
+      break;
+    case ErrorCodes.INPUT_CART:
+      setError(errorStrings.INPUT_CART);
+      break;
+    case ErrorCodes.VENUE_SLAG:
+      setError(errorStrings.VENUE_SLAG);
+      break;
+    case ErrorCodes.RECEIPT_ERROR:
+      setError(errorStrings.RECEIPT_ERROR);
+      break;
+    default:
+      setError(errorStrings.NOT_FOUND);
+      break;
+  }
 };
