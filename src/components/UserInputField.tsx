@@ -4,7 +4,7 @@ import {
   validateMonetaryInput,
 } from "../helpers/helpers";
 import { useLocalizedStrings } from "../hooks/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setDeliveryLocation } from "../store/features/deliveryLocationSlice";
 import {
@@ -17,14 +17,20 @@ import { ErrorCodes } from "../types/ErrorTypes";
 export const UserInputField = () => {
   const strings = useLocalizedStrings();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [longitude, setLongitude] = useState<string | number>();
-  const [latitude, setLatitude] = useState<string | number>();
+  const [longitude, setLongitude] = useState<string | number>("");
+  const [latitude, setLatitude] = useState<string | number>("");
   const [venue, setVenue] = useState<string>("");
   const [cartValue, setCartValue] = useState<string>("");
   const [cartError, setCartError] = useState<string>("");
   const [latError, setLatError] = useState<string>("");
   const [lonError, setLonError] = useState<string>("");
+  const [disableSubmit, setDisableSubmit] = useState<boolean>(true);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const allFieldsFilled = longitude && latitude && cartValue && venue;
+    setDisableSubmit(!allFieldsFilled);
+  }, [longitude, latitude, cartValue, venue]);
 
   const getCoordinates = () => {
     setIsLoading(true);
@@ -77,13 +83,11 @@ export const UserInputField = () => {
   const handleCartInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     const validInput = validateMonetaryInput(input);
-    setCartValue(input);
     if (validInput) {
-      console.log("valid input");
-      setCartError("");
+      setCartValue(input);
+      clearFieldErrors(ErrorCodes.INPUT_CART);
     } else {
-      console.log(input);
-      setCartError(strings.DETAILS.ERRORS.INPUT_CART);
+      setFieldErrors(ErrorCodes.INPUT_CART);
     }
   };
 
@@ -124,7 +128,7 @@ export const UserInputField = () => {
 
   const handleCoordinateManualInput = (
     input: string,
-    setState: React.Dispatch<React.SetStateAction<number | string | undefined>>,
+    setState: React.Dispatch<React.SetStateAction<number | string>>,
     coordinateDirection: coordinateEnum,
   ) => {
     const validInput = validateCoordinateInput(input, coordinateDirection);
@@ -198,7 +202,9 @@ export const UserInputField = () => {
             <button onClick={() => getCoordinates()} disabled={isLoading}>
               {isLoading ? "Loading..." : strings.DETAILS.BUTTON.LOCATION}{" "}
             </button>
-            <button type="submit">{strings.DETAILS.BUTTON.CALCULATE}</button>
+            <button disabled={disableSubmit} type="submit">
+              {strings.DETAILS.BUTTON.CALCULATE}
+            </button>
           </div>
         </form>
       </div>

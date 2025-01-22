@@ -17,6 +17,8 @@ const en = {
         LATITUDE: "Invalid values for Latitude",
         LONGITUDE: "Invalid values for Longitude",
       },
+      NOT_FOUND: "Error, something broke!",
+      RECEIPT_ERROR: "Failed at generating the Receipt !",
     },
   },
   RECEIPT: {

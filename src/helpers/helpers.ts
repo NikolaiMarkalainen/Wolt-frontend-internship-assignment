@@ -1,6 +1,7 @@
 import {
   coordinateEnum,
   ICalculateReceipt,
+  ICalculateResult,
   ICoordinates,
   IReceipt,
 } from "../types/DeliveryTypes";
@@ -56,9 +57,7 @@ export const coordinateDistanceCalc = (
   return distance;
 };
 
-export const calculateFees = (
-  props: ICalculateReceipt,
-): IReceipt | ErrorCodes => {
+export const calculateFees = (props: ICalculateReceipt): ICalculateResult => {
   let deliveryMultiplier;
 
   for (const range of props.distanceRanges) {
@@ -66,7 +65,7 @@ export const calculateFees = (
       deliveryMultiplier = range;
     }
   }
-  if (!deliveryMultiplier) return ErrorCodes.NOT_FOUND;
+  if (!deliveryMultiplier) return { error: ErrorCodes.RECEIPT_ERROR };
   const surCharge = props.cartValue < props.minCartValue ? 200 : 0;
   const deliveryFee =
     (deliveryMultiplier.b * props.distance) / 2 + props.baseFee;
@@ -80,5 +79,11 @@ export const calculateFees = (
     surCharge: surCharge,
     TotalPrice: totalSum,
   };
-  return totalFee;
+  return { result: totalFee };
+};
+
+export const clearStringState = (
+  setState: React.Dispatch<React.SetStateAction<string>>,
+) => {
+  setState("");
 };

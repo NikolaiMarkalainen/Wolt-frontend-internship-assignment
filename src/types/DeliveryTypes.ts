@@ -1,3 +1,5 @@
+import { ErrorCodes } from "./ErrorTypes";
+
 export interface IDistanceRanges {
   min: number;
   max: number;
@@ -39,4 +41,9 @@ export interface ICalculateReceipt {
 export enum coordinateEnum {
   Latitude,
   Longitude,
+}
+
+export interface ICalculateResult {
+  result?: IReceipt;
+  error?: ErrorCodes;
 }

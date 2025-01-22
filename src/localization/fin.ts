@@ -17,6 +17,8 @@ const fin = {
         LATITUDE: "Virheelliset arvot leveysasteelle",
         LONGITUDE: "Virheelliset arvot pituusasteelle",
       },
+      NOT_FOUND: "Error, something broke!",
+      RECEIPT_ERROR: "Failed at generating the Receipt !",
     },
   },
   RECEIPT: {
