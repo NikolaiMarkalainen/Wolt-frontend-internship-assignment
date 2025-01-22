@@ -1,5 +1,6 @@
 import "../App.css";
 import {
+  convertMoneyFloatToInt,
   setErrorMessage,
   validateCoordinateInput,
   validateMonetaryInput,
@@ -15,7 +16,11 @@ import {
 } from "../types/DeliveryTypes";
 import { ErrorCodes } from "../types/ErrorTypes";
 
-export const UserInputField = () => {
+interface Props {
+  setRender: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const UserInputField = (props: Props) => {
   const strings = useLocalizedStrings();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [longitude, setLongitude] = useState<string | number>("");
@@ -46,6 +51,7 @@ export const UserInputField = () => {
 
   const calculateFees = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    props.setRender(true);
     const staticApiResult = await fetch(
       `https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/${venue}/static`,
     ).then((response) => response.json());
@@ -67,16 +73,14 @@ export const UserInputField = () => {
       lat: Number(latitude),
       lon: Number(longitude),
     };
-    const newCartValue = parseFloat(
-      cartValue.replace(".", "").replace(",", "."),
-    );
+    const fixedCartValue = convertMoneyFloatToInt(cartValue);
     const deliveryLocation: IDeliveryLocation = {
       coordinates,
       minCartValue,
       baseFee,
       distanceRanges,
       userCoordinates,
-      cartValue: newCartValue,
+      cartValue: fixedCartValue,
     };
     dispatch(setDeliveryLocation(deliveryLocation));
   };

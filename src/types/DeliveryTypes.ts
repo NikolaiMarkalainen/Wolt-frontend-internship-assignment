@@ -25,9 +25,10 @@ export interface ICoordinates {
 export interface IReceipt {
   cartValue: number;
   deliveryFee: number;
-  distance: number;
+  distance: string;
   surCharge: number;
   TotalPrice: number;
+  Id: number;
 }
 
 export interface ICalculateReceipt {

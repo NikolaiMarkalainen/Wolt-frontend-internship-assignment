@@ -45,12 +45,7 @@ html {
   background-color: var(--accent-blue);
   position: relative;
 }
-.header img {
-  width: 16px;
-  height: 16px;
-  align-self: center;
-  padding: 0.2rem;
-}
+
 .header h3 {
   display: flex;
   justify-content: center;
@@ -67,6 +62,7 @@ html {
   transform: translateY(-50%);
 }
 .header-icons img {
+  padding: 0.5rem;
   width: 3vw;
   height: 3vh;
 }
@@ -78,11 +74,14 @@ html {
   align-items: center;
   flex-direction: row;
   margin: 1vw;
+  width: 100%;
   justify-content: space-evenly;
 }
 
 .input-field-header {
   text-align: center;
+  margin-bottom: 5vh;
+  font-size: 3vh;
 }
 .input-field-parent {
   background-color: var(--bg-secondary);
@@ -187,12 +186,27 @@ html {
   border: 1px solid var(--border-color);
   transition: background-color 0.3s ease, border-color 0.3s ease;
   border-radius: 8px;
+  animation: fadeIn 1s ease-in-out;
+}
+.receipt-parent-expanded {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  border-radius: 8px;
+  animation: fadeIn 1s ease-in-out;
 }
 
 .receipt-header {
+  font-size: 3vh;
   display: flex;
   width: 100%;
   justify-content: center;
+  margin-bottom: 5vh;
 }
 
 .receipt-item {
@@ -207,9 +221,52 @@ html {
   align-self: flex-end;
 }
 
+.receipt-item-end {
+  border-top: var(--bg-highlight) 1px solid;
+  display: flex;
+  flex-direction: row;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+.receipt-item-end p {
+  color: var(--success-green);
+}
+
 .receipt-parent:hover {
   background-color: var(--bg-highlight);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.receipt-error {
+  color: var(--error-red);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5vh;
+  animation: blink 1s linear;
+}
+
+@-webkit-keyframes blink {
+  from {
+    opacity: 1;
+    animation-duration: 1s;
+  }
+  to {
+    opacity: 0.5;
+    animation-duration: 1s;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opcaity: 0;
+  }
 }
 
 @media (max-width: 480px) {

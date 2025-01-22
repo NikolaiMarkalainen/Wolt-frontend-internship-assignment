@@ -18,21 +18,19 @@ export const validateCoordinateInput = (
   input: string,
   coordinateDirection: coordinateEnum,
 ): boolean => {
-  console.log(input);
   if (input === undefined) {
     return true;
   }
   // Regex checks allow + - at start with -90 to 90 or -180 to 180 with 7 decimal points and a dot seperator for it depending on param
   if (coordinateDirection === coordinateEnum.Latitude) {
-    console.log("?");
     const regex = new RegExp(
-      "^([-,+]?)(([0-8]?\\d|90)([.]{1}?(\\d{1,7})?)?)?$",
+      "^([-,+]?)(([0-8]?\\d|90)([.]{1}?(\\d{1,8})?)?)?$",
     );
     return regex.test(input);
   }
   if (coordinateDirection === coordinateEnum.Longitude) {
     const regex = new RegExp(
-      "^([-,+]?)(([0-9]{1,2}|1[1-7][1-9]|180)([.]{1}?(\\d{1,7})?)?)?$",
+      "^([-,+]?)(([0-9]{1,2}|1[1-7][1-9]|180)([.]{1}?(\\d{1,8})?)?)?$",
     );
     return regex.test(input);
   }
@@ -58,6 +56,35 @@ export const coordinateDistanceCalc = (
   return distance;
 };
 
+export const convertMoneyFloatToInt = (input: string): number => {
+  const [integer, decimalPart] = input.replace(",", ".").split(".");
+
+  if (decimalPart && decimalPart.length === 1) {
+    return Number(integer + decimalPart + "0");
+  }
+  if (!decimalPart && integer) {
+    return Number(integer + "00");
+  }
+  return Number(integer + decimalPart);
+};
+
+export const convertMoneyIntToFloat = (int: number): number => {
+  const decimaledNumber =
+    int.toString().slice(0, -2) + "." + int.toString().slice(-2);
+  Number(decimaledNumber);
+  return Number(decimaledNumber);
+};
+
+export const rawDistanceConvert = (distance: number): string => {
+  const distanceString = distance.toString();
+  const [fullValue] = distanceString.replace(",", ".").split(".");
+  if (fullValue.length >= 4) {
+    return `${(distance / 1000).toFixed(1)}km`;
+  } else {
+    return fullValue + "m";
+  }
+};
+
 export const calculateFees = (props: ICalculateReceipt): ICalculateResult => {
   let deliveryMultiplier;
 
@@ -71,14 +98,14 @@ export const calculateFees = (props: ICalculateReceipt): ICalculateResult => {
   const deliveryFee =
     (deliveryMultiplier.b * props.distance) / 2 + props.baseFee;
 
-  const totalSum = props.cartValue + props.cartValue + deliveryFee + surCharge;
-
+  const totalSum = props.cartValue + deliveryFee + surCharge;
   const totalFee: IReceipt = {
-    cartValue: props.cartValue,
-    distance: props.distance,
-    deliveryFee: deliveryFee,
-    surCharge: surCharge,
-    TotalPrice: totalSum,
+    cartValue: convertMoneyIntToFloat(props.cartValue),
+    distance: rawDistanceConvert(props.distance),
+    deliveryFee: convertMoneyIntToFloat(deliveryFee),
+    surCharge: convertMoneyIntToFloat(surCharge),
+    TotalPrice: convertMoneyIntToFloat(totalSum),
+    Id: Math.random(),
   };
   return { result: totalFee };
 };
