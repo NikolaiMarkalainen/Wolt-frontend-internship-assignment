@@ -28,7 +28,7 @@ const en = {
       FEE: "Delivery fee",
       DISTANCE: "Delivery distance",
     },
-    SMALL_CHARGE: "Samll order subcharge",
+    SMALL_CHARGE: "Small order subcharge",
     TOTAL: "Total price",
   },
 };
