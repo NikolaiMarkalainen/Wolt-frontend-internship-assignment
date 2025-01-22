@@ -158,9 +158,9 @@ html {
 }
 
 .spinner {
-  position: absolute;
-  left: 45%;
-  top: 45%;
+  display: flex;
+  justify-self: center;
+  align-self: center;
   border: 16px solid var(--border-color);
   border-top: 16px solid var(--accent-blue);
   border-radius: 50%;

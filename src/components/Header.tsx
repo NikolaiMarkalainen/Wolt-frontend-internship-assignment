@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import "../App.css";
-import { useLocalizedStrings } from "../hooks/hooks";
+import { useLocalizedStrings } from "../utils/hooks/hooks";
 import { Language } from "../types/LanguageTypes";
 import { changeLanguage } from "../store/features/languageSlice";
 export const Header = () => {

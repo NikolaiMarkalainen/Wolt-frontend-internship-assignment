@@ -4,10 +4,10 @@ import {
   ICalculateResult,
   ICoordinates,
   IReceipt,
-} from "../types/DeliveryTypes";
-import { ErrorCodes } from "../types/ErrorTypes";
-import strings from "../localization";
-import { store } from "../store/store";
+} from "../../types/DeliveryTypes";
+import { ErrorCodes } from "../../types/ErrorTypes";
+import strings from "../../utils/localization";
+import { store } from "../../store/store";
 export const validateMonetaryInput = (input: string): boolean => {
   /* digits + decimal seperator dot or comma and only two digits at the end */
   const regex = new RegExp("^\\d+([.|,]{1}(\\d{1,2})?)?$");

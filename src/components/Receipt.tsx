@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../App.css";
-import { setErrorMessage } from "../helpers/helpers";
-import { useCalculatePrice, useLocalizedStrings } from "../hooks/hooks";
+import { setErrorMessage } from "../utils/helpers/helpers";
+import { useCalculatePrice, useLocalizedStrings } from "../utils/hooks/hooks";
 
 export const Receipt = () => {
   const strings = useLocalizedStrings();
@@ -41,30 +41,3 @@ export const Receipt = () => {
     </div>
   );
 };
-
-/*
-    <div className="receipt-parent">
-      <div className="receipt-header">{strings.RECEIPT.TITLE}</div>
-      <div className="receipt-item">
-        {strings.RECEIPT.CART}
-        <p>{props.receipt.cartValue} EUR</p>
-      </div>
-      <div className="receipt-item">
-        {strings.RECEIPT.DELIVERY.FEE}
-        <p>{props.receipt.deliveryFee} EUR</p>
-      </div>
-      <div className="receipt-item">
-        {strings.RECEIPT.DELIVERY.DISTANCE}
-        <p>{props.receipt.distance}</p>
-      </div>
-      <div className="receipt-item">
-        {strings.RECEIPT.SMALL_CHARGE}
-        <p>{props.receipt.surCharge} EUR</p>
-      </div>
-      <div className="receipt-item-end">
-        {strings.RECEIPT.TOTAL}
-        <p>{props.receipt.TotalPrice} EUR </p>
-      </div>
-    </div>
-
-    */

@@ -4,8 +4,8 @@ import {
   setErrorMessage,
   validateCoordinateInput,
   validateMonetaryInput,
-} from "../helpers/helpers";
-import { useLocalizedStrings } from "../hooks/hooks";
+} from "../utils/helpers/helpers";
+import { useLocalizedStrings } from "../utils/hooks/hooks";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setDeliveryLocation } from "../store/features/deliveryLocationSlice";
@@ -54,7 +54,6 @@ export const UserInputField = () => {
     const staticApiResult = await fetch(
       `https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/${venue}/static`,
     ).then((response) => response.json());
-    console.log(staticApiResult);
     const dynamicApiResult = await fetch(
       `https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/${venue}/dynamic`,
     ).then((response) => response.json());
@@ -124,8 +123,6 @@ export const UserInputField = () => {
   return (
     <div className="card-parent">
       <div className="input-field-parent">
-        {isLoading && <div className="spinner"></div>}
-
         <div className="input-field-header">{strings.DETAILS.TITLE}</div>
         <div className="input-field-content">
           <form className="input-field-form" onSubmit={calculateFees}>
@@ -180,6 +177,8 @@ export const UserInputField = () => {
             {lonError && (
               <div className="input-field-child-error">{lonError}</div>
             )}
+            {isLoading && <div className="spinner"></div>}
+
             <div className="input-field-buttons">
               <button onClick={() => getCoordinates()} disabled={isLoading}>
                 {isLoading ? "Loading..." : strings.DETAILS.BUTTON.LOCATION}{" "}
