@@ -15,12 +15,8 @@ import {
   IDeliveryLocation,
 } from "../types/DeliveryTypes";
 import { ErrorCodes } from "../types/ErrorTypes";
-
-interface Props {
-  setRender: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export const UserInputField = (props: Props) => {
+import { Receipt } from "./Receipt";
+export const UserInputField = () => {
   const strings = useLocalizedStrings();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [longitude, setLongitude] = useState<string | number>("");
@@ -31,11 +27,14 @@ export const UserInputField = (props: Props) => {
   const [latError, setLatError] = useState<string>("");
   const [lonError, setLonError] = useState<string>("");
   const [disableSubmit, setDisableSubmit] = useState<boolean>(true);
+  const [renderReceipt, setRenderReceipt] = useState<boolean>(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     const allFieldsFilled = longitude && latitude && cartValue && venue;
     setDisableSubmit(!allFieldsFilled);
+    setRenderReceipt(false);
   }, [longitude, latitude, cartValue, venue]);
 
   const getCoordinates = () => {
@@ -51,7 +50,7 @@ export const UserInputField = (props: Props) => {
 
   const calculateFees = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    props.setRender(true);
+    setRenderReceipt(!renderReceipt);
     const staticApiResult = await fetch(
       `https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/${venue}/static`,
     ).then((response) => response.json());
@@ -123,73 +122,76 @@ export const UserInputField = (props: Props) => {
   };
 
   return (
-    <div className="input-field-parent">
-      {isLoading && <div className="spinner"></div>}
+    <div className="card-parent">
+      <div className="input-field-parent">
+        {isLoading && <div className="spinner"></div>}
 
-      <div className="input-field-header">{strings.DETAILS.TITLE}</div>
-      <div className="input-field-content">
-        <form className="input-field-form" onSubmit={calculateFees}>
-          <div data-test-id="venueSlug" className="input-field-child">
-            <p> {strings.DETAILS.VENUE} </p>
-            <input
-              placeholder="home-assignment-venue-helsinki"
-              type="text"
-              value={venue}
-              onChange={(e) => setVenue(e.target.value)}
-            />
-          </div>
-          <div data-test-id="cartValue" className="input-field-child">
-            <p> {strings.DETAILS.CART} </p>
-            <input type="text" value={cartValue} onChange={handleCartInput} />
-          </div>
-          {cartError && (
-            <div className="input-field-child-error">{cartError}</div>
-          )}
+        <div className="input-field-header">{strings.DETAILS.TITLE}</div>
+        <div className="input-field-content">
+          <form className="input-field-form" onSubmit={calculateFees}>
+            <div data-test-id="venueSlug" className="input-field-child">
+              <p> {strings.DETAILS.VENUE} </p>
+              <input
+                placeholder="home-assignment-venue-helsinki"
+                type="text"
+                value={venue}
+                onChange={(e) => setVenue(e.target.value)}
+              />
+            </div>
+            <div data-test-id="cartValue" className="input-field-child">
+              <p> {strings.DETAILS.CART} </p>
+              <input type="text" value={cartValue} onChange={handleCartInput} />
+            </div>
+            {cartError && (
+              <div className="input-field-child-error">{cartError}</div>
+            )}
 
-          <div data-test-id="userLatitude" className="input-field-child">
-            <p> {strings.DETAILS.LATITUDE} </p>
-            <input
-              type="text"
-              value={latitude}
-              onChange={(e) =>
-                handleCoordinateManualInput(
-                  e.target.value,
-                  setLatitude,
-                  coordinateEnum.Latitude,
-                )
-              }
-            />
-          </div>
-          {latError && (
-            <div className="input-field-child-error">{latError}</div>
-          )}
-          <div data-test-id="userLongitude" className="input-field-child">
-            <p> {strings.DETAILS.LONGITUDE} </p>
-            <input
-              type="text"
-              value={longitude}
-              onChange={(e) =>
-                handleCoordinateManualInput(
-                  e.target.value,
-                  setLongitude,
-                  coordinateEnum.Longitude,
-                )
-              }
-            />
-          </div>
-          {lonError && (
-            <div className="input-field-child-error">{lonError}</div>
-          )}
-          <div className="input-field-buttons">
-            <button onClick={() => getCoordinates()} disabled={isLoading}>
-              {isLoading ? "Loading..." : strings.DETAILS.BUTTON.LOCATION}{" "}
-            </button>
-            <button disabled={disableSubmit} type="submit">
-              {strings.DETAILS.BUTTON.CALCULATE}
-            </button>
-          </div>
-        </form>
+            <div data-test-id="userLatitude" className="input-field-child">
+              <p> {strings.DETAILS.LATITUDE} </p>
+              <input
+                type="text"
+                value={latitude}
+                onChange={(e) =>
+                  handleCoordinateManualInput(
+                    e.target.value,
+                    setLatitude,
+                    coordinateEnum.Latitude,
+                  )
+                }
+              />
+            </div>
+            {latError && (
+              <div className="input-field-child-error">{latError}</div>
+            )}
+            <div data-test-id="userLongitude" className="input-field-child">
+              <p> {strings.DETAILS.LONGITUDE} </p>
+              <input
+                type="text"
+                value={longitude}
+                onChange={(e) =>
+                  handleCoordinateManualInput(
+                    e.target.value,
+                    setLongitude,
+                    coordinateEnum.Longitude,
+                  )
+                }
+              />
+            </div>
+            {lonError && (
+              <div className="input-field-child-error">{lonError}</div>
+            )}
+            <div className="input-field-buttons">
+              <button onClick={() => getCoordinates()} disabled={isLoading}>
+                {isLoading ? "Loading..." : strings.DETAILS.BUTTON.LOCATION}{" "}
+              </button>
+              <button disabled={disableSubmit} type="submit">
+                {strings.DETAILS.BUTTON.CALCULATE}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
+      {renderReceipt && <Receipt />}
     </div>
   );
 };

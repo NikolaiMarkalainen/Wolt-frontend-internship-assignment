@@ -105,7 +105,6 @@ export const calculateFees = (props: ICalculateReceipt): ICalculateResult => {
     deliveryFee: convertMoneyIntToFloat(deliveryFee),
     surCharge: convertMoneyIntToFloat(surCharge),
     TotalPrice: convertMoneyIntToFloat(totalSum),
-    Id: Math.random(),
   };
   return { result: totalFee };
 };

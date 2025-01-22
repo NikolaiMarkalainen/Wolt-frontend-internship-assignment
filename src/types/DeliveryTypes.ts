@@ -28,7 +28,6 @@ export interface IReceipt {
   distance: string;
   surCharge: number;
   TotalPrice: number;
-  Id: number;
 }
 
 export interface ICalculateReceipt {

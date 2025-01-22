@@ -18,6 +18,7 @@ export const useCalculatePrice = (): ICalculateResult | undefined => {
     locationPrices.coordinates,
     locationPrices.userCoordinates,
   );
+  console.log(locationPrices);
   // distance calculated now total price for distance and
   const feeVariables: ICalculateReceipt = {
     distance,
