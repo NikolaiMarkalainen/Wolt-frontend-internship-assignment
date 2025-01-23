@@ -16,10 +16,12 @@ export const Header = () => {
       <h3>{strings.TITLE}</h3>
       <div className="header-icons">
         <img
+          id="finlang"
           src="/fin.png"
           onClick={() => handleLanguageChange(Language.Finnish)}
         />
         <img
+          id="englang"
           src="/uk.png"
           onClick={() => handleLanguageChange(Language.English)}
         />
