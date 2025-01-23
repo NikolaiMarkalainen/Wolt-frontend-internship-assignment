@@ -103,6 +103,7 @@ export const calculateFees = (props: ICalculateReceipt): ICalculateResult => {
   if (!deliveryMultiplier) return { error: ErrorCodes.RECEIPT_ERROR };
 
   // if cart is lower than minimum order requirement add 200 to the bill
+  console.log(props.cartValue, props.minCartValue);
   const surCharge = props.cartValue < props.minCartValue ? 200 : 0;
 
   // base fee is base payment + what venue wants
@@ -150,12 +151,3 @@ export const setErrorMessage = (
       break;
   }
 };
-
-/*
-min: The lower (inclusive) bound for the distance range in meters
-max: The upper (exclusive) bound for the distance range in meters. "max": 0 means that the delivery is not available for delivery distances equal or longer the value of min in that object.
-a: A constant amount to be added to the delivery fee on top of the base price
-b: Multiplier to be used for calculating distance based component of the delivery fee. b is factored in to the delivery fee by adding b * distance / 10 (rounded to the nearest integer value).
-For example, if the delivery distance is 1000 meters and the value of b is 2, we'd add 200 (2 * 1000 / 10) to the delivery fee.
-flag: You can ignore t
-*/
