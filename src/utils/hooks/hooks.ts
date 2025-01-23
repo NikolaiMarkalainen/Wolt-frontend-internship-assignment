@@ -28,7 +28,7 @@ export const useCalculatePrice = (): ICalculateResult | undefined => {
     distanceRanges: locationPrices.distanceRanges,
     cartValue: locationPrices.cartValue,
   };
-  console.log(locationPrices.coordinates);
+  console.log(locationPrices.coordinates, feeVariables);
   const fees = calculateFees(feeVariables);
   return fees;
 };
