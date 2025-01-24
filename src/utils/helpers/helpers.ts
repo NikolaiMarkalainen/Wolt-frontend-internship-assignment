@@ -8,6 +8,7 @@ import {
 import { ErrorCodes } from "../../types/ErrorTypes";
 import strings from "../../utils/localization";
 import { store } from "../../store/store";
+import { initialState } from "../../store/features/deliveryLocationSlice";
 export const validateMonetaryInput = (input: string): boolean => {
   if (input === undefined || input === "") {
     return true;
@@ -123,6 +124,26 @@ export const calculateFees = (props: ICalculateReceipt): ICalculateResult => {
     TotalPrice: convertMoneyIntToFloat(totalSum),
   };
   return { result: totalFee };
+};
+
+export const variablesForCalculation = (): ICalculateReceipt | undefined => {
+  const state = store.getState();
+  if (state.delivery === initialState) return;
+
+  const distance = coordinateDistanceCalc(
+    state.delivery.coordinates,
+    state.delivery.userCoordinates,
+  );
+
+  const variablesForCalculation: ICalculateReceipt = {
+    distance,
+    minCartValue: state.delivery.minCartValue,
+    baseFee: state.delivery.baseFee,
+    distanceRanges: state.delivery.distanceRanges,
+    cartValue: state.delivery.cartValue,
+  };
+
+  return variablesForCalculation;
 };
 
 export const setErrorMessage = (

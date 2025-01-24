@@ -1,8 +1,8 @@
 const fin = {
   TITLE: "Tilauksen hintaarvio laskuri",
   DETAILS: {
-    TITLE: "Tilauksen tiedot",
-    VENUE: "Tapahtumapaikan tunnus",
+    TITLE: "Wolt tilauksen laskuri",
+    VENUE: "Paikan tunnus",
     CART: "Ostoskorin arvo",
     LATITUDE: "Käyttäjän leveysaste",
     LONGITUDE: "Käyttäjän pituusaste",
@@ -18,7 +18,7 @@ const fin = {
         LONGITUDE: "Virheelliset arvot pituusasteelle",
       },
       NOT_FOUND: "Error, something broke!",
-      RECEIPT_ERROR: "Failed at generating the Receipt !",
+      RECEIPT_ERROR: "Paikka on alueen ulkopuolella, tilausta ei voi tehdä",
     },
   },
   RECEIPT: {

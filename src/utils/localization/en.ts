@@ -1,7 +1,7 @@
 const en = {
   TITLE: "Delivery order price calculator",
   DETAILS: {
-    TITLE: "Details list",
+    TITLE: "Wolt Delivery Calculator",
     VENUE: "Venue slug",
     CART: "Cart Value",
     LATITUDE: "User latitude",
@@ -18,7 +18,7 @@ const en = {
         LONGITUDE: "Invalid values for Longitude",
       },
       NOT_FOUND: "Error, something broke!",
-      RECEIPT_ERROR: "Failed at generating the Receipt !",
+      RECEIPT_ERROR: "Venue is out of bounds, unable to order",
     },
   },
   RECEIPT: {
