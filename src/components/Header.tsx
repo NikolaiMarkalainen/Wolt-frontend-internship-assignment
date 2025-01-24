@@ -1,10 +1,8 @@
 import { useDispatch } from "react-redux";
 import "../App.css";
-import { useLocalizedStrings } from "../utils/hooks/hooks";
 import { Language } from "../types/LanguageTypes";
 import { changeLanguage } from "../store/features/languageSlice";
 export const Header = () => {
-  const strings = useLocalizedStrings();
   const dispatch = useDispatch();
 
   const handleLanguageChange = (lang: Language) => {
@@ -13,7 +11,7 @@ export const Header = () => {
 
   return (
     <div className="header">
-      <h3>{strings.TITLE}</h3>
+      <h3>Wolt Delivery Calculator</h3>
       <div className="header-icons">
         <img
           id="finlang"

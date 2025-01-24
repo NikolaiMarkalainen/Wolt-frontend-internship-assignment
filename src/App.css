@@ -1,15 +1,17 @@
 :root {
-  --bg-primary: #121212;
-  --bg-secondary: #1e1e1e;
-  --bg-highlight: #272727;
+  --bg-secondary: #333333; /* Lighter secondary background */
+  --bg-highlight: #444444; /* Lighter highlight color */
+  --off-white: #f5f5f5;
+
+  --wolt-blue: #009de0;
+  --wolt-blue-secondary: #00c8e0;
+  --dark-blue: #0077b6;
 
   --text-primary: #e0e0e0;
   --text-secondary: #a3a3a3;
   --text-disabled: #666666;
 
-  --accent-blue: #009de0;
   --success-green: #30c582;
-  --warning-yellow: #ffb900;
   --error-red: #e02020;
 
   --border-color: #2a2a2a;
@@ -25,56 +27,72 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+#root {
+  width: 100%;
+}
 body,
 html {
-  background-color: var(--bg-primary);
+  background-color: var(--off-white);
   color: var(--text-primary);
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   font-size: 2vh;
+  padding: 0;
+  margin: 0;
 }
 
 .header {
   color: var(--primary-text);
   display: flex;
-  padding: 1.5rem;
   align-items: center;
-  background-color: var(--accent-blue);
-  position: relative;
+  background-color: var(--wolt-blue);
 }
 
 .header h3 {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   flex: 1;
-  margin: 0;
-  padding-right: 2rem;
+  margin-left: 5rem;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  color: var(--text-primary);
+  font-family: sans-serif;
 }
 .header-icons {
-  margin-top: 0.3rem;
-  right: 1rem;
-  position: absolute;
+  display: flex;
+  flex: 0.1;
   justify-content: flex-end;
-  top: 50%;
-  transform: translateY(-50%);
 }
 .header-icons img {
   padding: 0.5rem;
-  width: 32px;
-  height: 32px;
+  height: 1.5rem;
+  width: 1.5rem;
 }
 
 .card-parent {
-  padding-top: 2rem;
+  margin-left: 2.5%;
+  background: linear-gradient(
+      45deg,
+      var(--wolt-blue) 25%,
+      var(--wolt-blue-secondary) 25%,
+      var(--wolt-blue-secondary) 50%,
+      var(--wolt-blue) 50%,
+      var(--wolt-blue) 75%,
+      var(--wolt-blue-secondary) 75%,
+      var(--wolt-blue-secondary)
+    )
+    0 0;
   display: flex;
+  width: 95%;
+
   height: 100%;
-  align-items: center;
+
   flex-direction: row;
-  margin: 1vw;
-  width: 100%;
+  margin-top: 1vw;
   justify-content: space-evenly;
 }
 
@@ -85,7 +103,9 @@ html {
 }
 .input-field-parent {
   background-color: var(--bg-secondary);
-  height: 100%;
+  height: 85%;
+  margin-top: 2.5%;
+  margin-bottom: 2.5%;
   width: 40%;
   display: flex;
   flex-direction: column;
@@ -145,6 +165,7 @@ html {
 }
 .input-field-buttons {
   flex: 1;
+
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -155,8 +176,24 @@ html {
   margin: 0.5rem;
   height: 5vh;
   font-size: 2vh;
+  margin: 1;
+  color: var(--text-primary);
+  background-color: var(--wolt-blue);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.2s ease;
 }
 
+.input-field-buttons button:hover {
+  background-color: var(--dark-blue);
+  color: var(--off-white);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
+}
+
+.input-field-buttons button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 .spinner {
   display: flex;
   justify-self: center;
@@ -181,7 +218,9 @@ html {
   display: flex;
   flex-direction: column;
   width: 40%;
-  height: 100%;
+  height: 85%;
+  margin-top: 2.5%;
+  margin-bottom: 2.5%;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   transition: background-color 0.3s ease, border-color 0.3s ease;
@@ -270,7 +309,11 @@ html {
 }
 
 @media (max-width: 480px) {
+  html {
+    flex-direction: column;
+  }
   .card-parent {
+    background: none;
     flex-direction: column;
     padding-top: 0.5rem;
   }

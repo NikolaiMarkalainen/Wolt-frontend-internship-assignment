@@ -103,8 +103,10 @@ export const calculateFees = (props: ICalculateReceipt): ICalculateResult => {
   if (!deliveryMultiplier) return { error: ErrorCodes.RECEIPT_ERROR };
 
   // if cart is lower than minimum order requirement add 200 to the bill
-  console.log(props.cartValue, props.minCartValue);
-  const surCharge = props.cartValue < props.minCartValue ? 200 : 0;
+  const surCharge =
+    props.cartValue < props.minCartValue
+      ? props.minCartValue - props.cartValue
+      : 0;
 
   // base fee is base payment + what venue wants
   const baseFeeAdjusted = props.baseFee + deliveryMultiplier.a;
