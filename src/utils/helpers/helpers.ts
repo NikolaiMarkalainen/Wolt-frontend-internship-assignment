@@ -9,6 +9,7 @@ import { ErrorCodes } from "../../types/ErrorTypes";
 import strings from "../../utils/localization";
 import { store } from "../../store/store";
 import { initialState } from "../../store/features/deliveryLocationSlice";
+
 export const validateMonetaryInput = (input: string): boolean => {
   if (input === undefined || input === "") {
     return true;
@@ -92,9 +93,11 @@ export const rawDistanceConvert = (distance: number): string => {
   }
 };
 
-export const calculateFees = (props: ICalculateReceipt): ICalculateResult => {
+export const calculateFees = (
+  props: ICalculateReceipt | undefined,
+): ICalculateResult => {
   let deliveryMultiplier;
-
+  if (props === undefined) return { error: ErrorCodes.RECEIPT_ERROR };
   // Distance larger than minimum, maximum bigger than distance
   for (const range of props.distanceRanges) {
     if (props.distance >= range.min && range.max >= props.distance) {
@@ -128,8 +131,8 @@ export const calculateFees = (props: ICalculateReceipt): ICalculateResult => {
 
 export const variablesForCalculation = (): ICalculateReceipt | undefined => {
   const state = store.getState();
-  if (state.delivery === initialState) return;
 
+  if (state.delivery === initialState) return;
   const distance = coordinateDistanceCalc(
     state.delivery.coordinates,
     state.delivery.userCoordinates,

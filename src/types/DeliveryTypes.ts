@@ -36,6 +36,7 @@ export interface ICalculateReceipt {
   minCartValue: number;
   cartValue: number;
   baseFee: number;
+  error?: boolean;
 }
 
 export enum coordinateEnum {

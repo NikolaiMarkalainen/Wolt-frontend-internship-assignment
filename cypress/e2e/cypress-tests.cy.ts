@@ -23,7 +23,7 @@ function disabledButtonState() {
       .find("input")
       .should("not.have.value", "")
       .then((value) => {
-        if (!value.val()) allFieldsFilled = false;
+        if (!value) allFieldsFilled = false;
       });
   }
   if (!allFieldsFilled) {

@@ -28,15 +28,18 @@ export const UserInputField = () => {
   const [lonError, setLonError] = useState<string>("");
   const [disableSubmit, setDisableSubmit] = useState<boolean>(true);
   const [renderReceipt, setRenderReceipt] = useState<boolean>(false);
-
+  const [loadingReceipt, setIsLoadingReceipt] = useState<boolean | undefined>();
   const dispatch = useDispatch();
 
   useEffect(() => {
     const allFieldsFilled = longitude && latitude && cartValue && venue;
     setDisableSubmit(!allFieldsFilled);
-    setRenderReceipt(false);
   }, [longitude, latitude, cartValue, venue]);
 
+  useEffect(() => {
+    console.log(loadingReceipt);
+    if (!loadingReceipt && loadingReceipt !== undefined) setRenderReceipt(true);
+  }, [loadingReceipt]);
   const getCoordinates = () => {
     setIsLoading(true);
     navigator.geolocation.getCurrentPosition((position) => {
@@ -47,40 +50,63 @@ export const UserInputField = () => {
       setLonError("");
     });
   };
+  const validateFormEntries = (): boolean => {
+    if (!latitude) {
+      setErrorMessage(ErrorCodes.COORDINATES_LAT, setLatError);
+      return false;
+    }
+    if (!longitude) {
+      setErrorMessage(ErrorCodes.COORDINATES_LON, setLonError);
+      return false;
+    }
+    if (!cartValue) {
+      setErrorMessage(ErrorCodes.INPUT_CART, setCartError);
+      return false;
+    }
+    return true;
+  };
 
   const calculateFees = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setRenderReceipt(!renderReceipt);
-    const staticApiResult = await fetch(
-      `https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/${venue}/static`,
-    ).then((response) => response.json());
-    const dynamicApiResult = await fetch(
-      `https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/${venue}/dynamic`,
-    ).then((response) => response.json());
+    const validForm = validateFormEntries();
+    if (!validForm) return;
+    setIsLoadingReceipt(true);
+    try {
+      const staticApiResult = await fetch(
+        `https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/${venue}/static`,
+      ).then((response) => response.json());
+      const dynamicApiResult = await fetch(
+        `https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/${venue}/dynamic`,
+      ).then((response) => response.json());
 
-    const [lon, lat] = staticApiResult.venue_raw.location.coordinates;
-    const coordinates = { lat, lon };
-    const minCartValue =
-      dynamicApiResult.venue_raw.delivery_specs.order_minimum_no_surcharge;
-    const baseFee =
-      dynamicApiResult.venue_raw.delivery_specs.delivery_pricing.base_price;
-    const distanceRanges =
-      dynamicApiResult.venue_raw.delivery_specs.delivery_pricing
-        .distance_ranges;
-    const userCoordinates: ICoordinates = {
-      lat: Number(latitude),
-      lon: Number(longitude),
-    };
-    const fixedCartValue = convertMoneyFloatToInt(cartValue);
-    const deliveryLocation: IDeliveryLocation = {
-      coordinates,
-      minCartValue,
-      baseFee,
-      distanceRanges,
-      userCoordinates,
-      cartValue: fixedCartValue,
-    };
-    dispatch(setDeliveryLocation(deliveryLocation));
+      const [lon, lat] = staticApiResult.venue_raw.location.coordinates;
+      const coordinates = { lat, lon };
+      const minCartValue =
+        dynamicApiResult.venue_raw.delivery_specs.order_minimum_no_surcharge;
+      const baseFee =
+        dynamicApiResult.venue_raw.delivery_specs.delivery_pricing.base_price;
+      const distanceRanges =
+        dynamicApiResult.venue_raw.delivery_specs.delivery_pricing
+          .distance_ranges;
+      const userCoordinates: ICoordinates = {
+        lat: Number(latitude),
+        lon: Number(longitude),
+      };
+      const fixedCartValue = convertMoneyFloatToInt(cartValue);
+      const deliveryLocation: IDeliveryLocation = {
+        coordinates,
+        minCartValue,
+        baseFee,
+        distanceRanges,
+        userCoordinates,
+        cartValue: fixedCartValue,
+      };
+      dispatch(setDeliveryLocation(deliveryLocation));
+    } catch (error) {
+      console.error("error", error);
+    } finally {
+      setIsLoadingReceipt(false);
+    }
   };
 
   const handleCartInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,6 +149,7 @@ export const UserInputField = () => {
   return (
     <div className="card-parent">
       <div className="input-field-parent">
+        <div className="input-field-header-bar"></div>
         <div className="input-field-header">{strings.DETAILS.TITLE}</div>
         <div className="input-field-content">
           <form className="input-field-form" onSubmit={calculateFees}>
