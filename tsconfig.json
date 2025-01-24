@@ -4,11 +4,5 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-  "compilerOptions": {
-    "target": "es6",
-    "lib": ["es6", "dom"],
-    "strict": true,
-    "types": ["cypress"]
-  },
-  "exclude": ["./cypress.config.js", "node_modules", "cypress", "**/*.cy.tsx"]
+  "exclude": ["cypress.config.ts", "cypress", "node_modules", "vitest/globals"]
 }
