@@ -153,26 +153,33 @@ export const UserInputField = () => {
         <div className="input-field-header">{strings.DETAILS.TITLE}</div>
         <div className="input-field-content">
           <form className="input-field-form" onSubmit={calculateFees}>
-            <div data-test-id="venueSlug" className="input-field-child">
+            <div className="input-field-child">
               <p> {strings.DETAILS.VENUE} </p>
               <input
+                data-test-id="venueSlug"
                 placeholder="home-assignment-venue-helsinki"
                 type="text"
                 value={venue}
                 onChange={(e) => setVenue(e.target.value)}
               />
             </div>
-            <div data-test-id="cartValue" className="input-field-child">
+            <div className="input-field-child">
               <p> {strings.DETAILS.CART} </p>
-              <input type="text" value={cartValue} onChange={handleCartInput} />
+              <input
+                data-test-id="cartValue"
+                type="text"
+                value={cartValue}
+                onChange={handleCartInput}
+              />
             </div>
             {cartError && (
               <div className="input-field-child-error">{cartError}</div>
             )}
 
-            <div data-test-id="userLatitude" className="input-field-child">
+            <div className="input-field-child">
               <p> {strings.DETAILS.LATITUDE} </p>
               <input
+                data-test-id="userLatitude"
                 type="text"
                 value={latitude}
                 onChange={(e) =>
@@ -187,10 +194,11 @@ export const UserInputField = () => {
             {latError && (
               <div className="input-field-child-error">{latError}</div>
             )}
-            <div data-test-id="userLongitude" className="input-field-child">
+            <div className="input-field-child">
               <p> {strings.DETAILS.LONGITUDE} </p>
               <input
                 type="text"
+                data-test-id="userLongitude"
                 value={longitude}
                 onChange={(e) =>
                   handleCoordinateManualInput(

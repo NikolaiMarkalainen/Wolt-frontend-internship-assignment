@@ -20,7 +20,6 @@ function disabledButtonState() {
   let allFieldsFilled = true;
   for (const field of inputFieldArray) {
     cy.get(field)
-      .find("input")
       .should("not.have.value", "")
       .then((value) => {
         if (!value) allFieldsFilled = false;
@@ -39,10 +38,10 @@ function disabledButtonState() {
 }
 
 function populateFormWithData(content: formFields) {
-  cy.get(inputField.venue).find("input").type(content.venue);
-  cy.get(inputField.cart).find("input").type(content.cartValue);
-  cy.get(inputField.lat).find("input").type(content.latitude);
-  cy.get(inputField.lon).find("input").type(content.longitude);
+  cy.get(inputField.venue).type(content.venue);
+  cy.get(inputField.cart).type(content.cartValue);
+  cy.get(inputField.lat).type(content.latitude);
+  cy.get(inputField.lon).type(content.longitude);
   disabledButtonState();
 }
 
@@ -61,7 +60,7 @@ function verifyCalculationFields() {
 
 function clearFormFromData() {
   for (const field of inputFieldArray) {
-    cy.get(field).find("input").clear();
+    cy.get(field).clear();
   }
 }
 
@@ -97,10 +96,22 @@ describe("generic flow", () => {
         cy.get(`#${id}`).click();
         cy.get(".header h3").should("have.text", title);
         cy.get(".input-field-header").should("have.text", card.trim());
-        cy.get(inputField.venue).find("p").should("include.text", venue);
-        cy.get(inputField.cart).find("p").should("include.text", cart);
-        cy.get(inputField.lat).find("p").should("include.text", latitude);
-        cy.get(inputField.lon).find("p").should("include.text", longitude);
+        cy.get(".input-field-child")
+          .eq(0)
+          .find("p")
+          .should("include.text", venue);
+        cy.get(".input-field-child")
+          .eq(1)
+          .find("p")
+          .should("include.text", cart);
+        cy.get(".input-field-child")
+          .eq(2)
+          .find("p")
+          .should("include.text", latitude);
+        cy.get(".input-field-child")
+          .eq(3)
+          .find("p")
+          .should("include.text", longitude);
         cy.get(".input-field-header").should("have.text", card);
       },
     );
@@ -138,6 +149,6 @@ describe("generic flow", () => {
     clearFormFromData();
     populateFormWithData(contentWithDistance);
     verifyCalculationFields();
-    cy.get(inputField.cart).find("input");
+    cy.get(inputField.cart);
   });
 });
