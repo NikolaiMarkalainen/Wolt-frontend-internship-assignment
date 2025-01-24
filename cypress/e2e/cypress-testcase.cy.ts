@@ -1,5 +1,4 @@
 import strings from "../../src/utils/localization";
-
 interface formFields {
   venue: string;
   cartValue: string;
