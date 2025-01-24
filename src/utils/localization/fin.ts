@@ -1,5 +1,5 @@
 const fin = {
-  TITLE: "Tilauksen hintaarvio laskuri",
+  TITLE: "Tilauksen hinta-arvio laskuri",
   DETAILS: {
     TITLE: "Wolt tilauksen laskuri",
     VENUE: "Paikan tunnus",
@@ -17,7 +17,7 @@ const fin = {
         LATITUDE: "Virheelliset arvot leveysasteelle",
         LONGITUDE: "Virheelliset arvot pituusasteelle",
       },
-      NOT_FOUND: "Error, something broke!",
+      NOT_FOUND: "HUPSISTA, jokin meni rikki!!!",
       RECEIPT_ERROR: "Paikka on alueen ulkopuolella, tilausta ei voi tehdä",
     },
   },
