@@ -1,50 +1,48 @@
-# React + TypeScript + Vite
+Before running the application:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Use node version 23.x.x 
 
-Currently, two official plugins are available:
+verify node version 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> node -v 
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+if you have for some reason different node version use nvm package manager.
 
-- Configure the top-level `parserOptions` property like this:
+> nvm use 23
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Running application after cloning the repository:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+> cd Wolt-frontend-internship-assignment
+
+> npm install
+
+> npm run dev
+
+Application should be running.
+
+
+Running tests created for the application
+
+
+Unit tests VITEST located at /src/vitest
+
+Run from project root where package.json is located with the following command: 
+
+> npm run test
+
+
+
+Cypress test cases E2E located at /cypress/e2e/
+
+Run from project root where package.json is located with the following command:
+> npm run cy:open
+
+May require sudo command on linux partitions
+
+Allow permissions if asked by cypress to successfully run the tests.
+Move to E2E Testing and choose whichever browser but tested on Chrome and Firefox
+
+Choose from sepcs cypres--tests.cy.ts, once chosen the tests will run.
